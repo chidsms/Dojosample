@@ -7,7 +7,7 @@
 
 <style type="text/css">
 <%
-	BWFUser currentUser = BWFUser.getCurrentUser();
+	User currentUser = User.getCurrentUser();
 	AccessControlHelper ach = new AccessControlHelper(currentUser); 
 	// System.out.println("### User Name: " + currentUser.getSiteMinderUserFirstName() + "." + currentUser.getSiteMinderUserLastName());
 	int tabCount = ach.getTabCount();
@@ -69,8 +69,8 @@
 <script type="text/javascript" src="dojo_build/bwf_task_detail.js" 
 	djConfig="isDebug: false, parseOnLoad: true">
 	
-			dojo.registerModulePath("mssb", "../mssb");
-			dojo.require("mssb.TaskDetail.TaskDetailView");
+			dojo.registerModulePath("mssb", "../object");
+			dojo.require("object.TaskDetail.TaskDetailView");
 			dojo.require("dojo.parser");
 			
 		
@@ -90,37 +90,37 @@
 <script type="text/javascript">
 		
 		
-			//var mssb = mssb || {}; // For development mode
-			mssb = mssb || {}; // For dojo_build
-			mssb.convertedUser = <%= currentUser.isConvertedLSB() %>; 
-			mssb.loggedInUser = {};
-			mssb.loggedInUser.isBranchOps = <%=	currentUser.isBranchOps()	%>;
-			mssb.loggedInUser.isFCops =  <%=currentUser.isFCOps()%>;
+			//var object = object || {}; // For development mode
+			object = object || {}; // For dojo_build
+			object.convertedUser = <%= currentUser.isConvertedLSB() %>; 
+			object.loggedInUser = {};
+			object.loggedInUser.isBranchOps = <%=	currentUser.isBranchOps()	%>;
+			object.loggedInUser.isFCops =  <%=currentUser.isFCOps()%>;
 			//HL9.2 added for SRU users
-			mssb.loggedInUser.isSRUAssociate = <%= currentUser.isSRUAssociate() %>;
-			mssb.loggedInUser.isSRUSupervisor = <%= currentUser.isSRUSupervisor() %>;		
+			object.loggedInUser.isSRUAssociate = <%= currentUser.isSRUAssociate() %>;
+			object.loggedInUser.isSRUSupervisor = <%= currentUser.isSRUSupervisor() %>;		
 			
 			//KS 10.2 added for ATS users
-			mssb.loggedInUser.isATSOps = <%= currentUser.isACATSOperations() %>;
-			mssb.loggedInUser.isATSApprover = <%= currentUser.isACATSApprover() %>;		
+			object.loggedInUser.isATSOps = <%= currentUser.isACATSOperations() %>;
+			object.loggedInUser.isATSApprover = <%= currentUser.isACATSApprover() %>;		
 			
-			mssb.reconHolder = "";
-			mssb.globalLookup = 
-				<% LookUpManager lookupMgr = new com.mssb.bwf.ui.lookup.LookUpManager(); %>
+			object.reconHolder = "";
+			object.globalLookup = 
+				<% LookUpManager lookupMgr = new com.object.bwf.ui.lookup.LookUpManager(); %>
 				<%=	lookupMgr.getLookDataAsJSON() %>;
 			
 			<% if(env != null) { %>
-			mssb.globalLookup.environment = '<%= env %>';
+			object.globalLookup.environment = '<%= env %>';
 			<% } %>
-			mssb.windowopen = function(nativeURL) {
+			object.windowopen = function(nativeURL) {
 				nativeWindow = window.open(nativeURL, "nativeWindow", "location=1,status=1,scrollbars=1,menubar=1,toolbar=1,width=960,height=300, resizable=1");
 			};
 			
-			mssb.requestTypeData = "";
-		    mssb.getRequestTypes = function() {  
+			object.requestTypeData = "";
+		    object.getRequestTypes = function() {  
 	        	var rtData = {};
-	        	if(mssb.globalLookup.preferences.RT) {
-	           		dojo.forEach(mssb.globalLookup.preferences.RT,function(item){
+	        	if(object.globalLookup.preferences.RT) {
+	           		dojo.forEach(object.globalLookup.preferences.RT,function(item){
 	              		var code;
 	              		var title;
 	     	     		try {
@@ -142,91 +142,91 @@
 		    	
 		    	switch(transType) {
 		    		case "ACATS_TransferIn":
-		    			taskDataController = new mssb.TaskDetail.ACATSController(contextData);
+		    			taskDataController = new object.TaskDetail.ACATSController(contextData);
 		    			break;
 		    			
 		    		case "TradeCorrection":
-		    			taskDataController = new mssb.TaskDetail.TradeCorrectionsController(contextData);
+		    			taskDataController = new object.TaskDetail.TradeCorrectionsController(contextData);
 		    			break;
 		    		
 		    		case "AutoEnd":
-		    			taskDataController = new mssb.TaskDetail.AutoEndController(contextData);
+		    			taskDataController = new object.TaskDetail.AutoEndController(contextData);
 		    			break;
 		
 		    		case "NewAccountDocument":
-		    			taskDataController = new mssb.TaskDetail.NewAccountsDocumentController(contextData);
+		    			taskDataController = new object.TaskDetail.NewAccountsDocumentController(contextData);
 		    			break;
 		    		
 		    		case "AddressChange":
-		    			taskDataController = new mssb.TaskDetail.AddressChangeController(contextData);
+		    			taskDataController = new object.TaskDetail.AddressChangeController(contextData);
 		    			break;
 		    		
 		    		case "MiscCorrespondence":
-		    			taskDataController = new mssb.TaskDetail.MiscCorrespondenceController(contextData);
+		    			taskDataController = new object.TaskDetail.MiscCorrespondenceController(contextData);
 		    			break;
 		    		
 		    		case "RejectDocument":
-		    			taskDataController = new mssb.TaskDetail.RejectDocumentController(contextData);
+		    			taskDataController = new object.TaskDetail.RejectDocumentController(contextData);
 		    			break;
 		    			
 		    		case "Complaint_FA_OPS_Staff":
 		    		case "ComplaintMgmtTeam":
 		    		case "ComplaintComplex_BOM":
-		    			taskDataController = new mssb.TaskDetail.ComplaintsTaskController(contextData);
+		    			taskDataController = new object.TaskDetail.ComplaintsTaskController(contextData);
 		    			break;
 
 					case "STLOA":
-		    			taskDataController = new mssb.TaskDetail.STLOAController(contextData);
+		    			taskDataController = new object.TaskDetail.STLOAController(contextData);
 						break;
 						
 					case "CheckRequest":
-		    			taskDataController = new mssb.TaskDetail.CheckRequestController(contextData);
+		    			taskDataController = new object.TaskDetail.CheckRequestController(contextData);
 						break;
 						
 					case "JournalsEntry":
-		    			taskDataController = new mssb.TaskDetail.JournalsEntryController(contextData);
+		    			taskDataController = new object.TaskDetail.JournalsEntryController(contextData);
 						break;
 						
 					case "SPS_NewInstructionSetup":
-		    			taskDataController = new mssb.TaskDetail.SPSNewInstructionSetupController(contextData);
+		    			taskDataController = new object.TaskDetail.SPSNewInstructionSetupController(contextData);
 						break;
 						
 					case "SPS_Modification":
-		    			taskDataController = new mssb.TaskDetail.SPSModificationController(contextData);
+		    			taskDataController = new object.TaskDetail.SPSModificationController(contextData);
 						break;
 						
 					case "FedFunds":
-		    			taskDataController = new mssb.TaskDetail.FedFundsController(contextData);
+		    			taskDataController = new object.TaskDetail.FedFundsController(contextData);
 						break;
 						
 					case "AFT_ACH_NewInstructionSetup":
-		    			taskDataController = new mssb.TaskDetail.AFTACHNewInstructionSetupController(contextData);
+		    			taskDataController = new object.TaskDetail.AFTACHNewInstructionSetupController(contextData);
 						break;
 						
 					case "AFT_ACH_Execution":
-		    			taskDataController = new mssb.TaskDetail.AFTACHExecutionController(contextData);
+		    			taskDataController = new object.TaskDetail.AFTACHExecutionController(contextData);
 						break;
 						
 					case "AFT_ACH_Modification":
-		    			taskDataController = new mssb.TaskDetail.AFTACHModificationController(contextData);
+		    			taskDataController = new object.TaskDetail.AFTACHModificationController(contextData);
 						break;
 						
 					case "VDA":
-		    			taskDataController = new mssb.TaskDetail.VDAController(contextData);
+		    			taskDataController = new object.TaskDetail.VDAController(contextData);
 						break;
 					
 					case "EmailUpload":
-						taskDataController = new mssb.TaskDetail.EmailUploadController(contextData);
+						taskDataController = new object.TaskDetail.EmailUploadController(contextData);
 						break;
 		    	//	default:
-		    	//		taskDataController = new mssb.TaskDetail.MoneyMovementController(contextData);
+		    	//		taskDataController = new object.TaskDetail.MoneyMovementController(contextData);
 		    	}
 		    	
 		     	return taskDataController;
 			//	if(requestType == 'FedFunds'){
 			};  
 			
-			mssb.error = function(error, msg, taskID, documentViewer, firstLevelDialog) {
+			object.error = function(error, msg, taskID, documentViewer, firstLevelDialog) {
 				console.debug(error);
 				var dialog = dijit.byId("bwferrorDialog");
 				
@@ -257,7 +257,7 @@
 				dialog.show();
 			};
 			
-			mssb.tabMenu_hideDocViewer = function(taskid) {
+			object.tabMenu_hideDocViewer = function(taskid) {
 				var documentViewer = dijit.byId(taskid+"documentViewer");
 				if(documentViewer != null) {
 				  documentViewer.documentViewerSignature.domNode.style.display = "none";
@@ -265,7 +265,7 @@
 				}
 			};
 			
-			mssb.tabMenu_showDocViewer = function(taskid) {
+			object.tabMenu_showDocViewer = function(taskid) {
 				var documentViewer = dijit.byId(taskid+"documentViewer");
 				if(documentViewer != null) {
 				  documentViewer.documentViewerSignature.domNode.style.display = "";
@@ -273,7 +273,7 @@
 				}
 			};
 						
-			mssb.complaintsPublishController = function(taskId,formId) {
+			object.complaintsPublishController = function(taskId,formId) {
 				dojo.publish(formId + 'submitted' + taskId,[{}]);
 			};
 			
@@ -283,64 +283,64 @@
 				
 				switch(component) {
 		    		case "My Reminders":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#2";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#2";
 		    			break;
 		    			
 		    		case "Previous Days Activities":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#3";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#3";
 		    			break;
 		    			
 		    		case "Tasks":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#5";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_dashboard.dcr#5";
 		    			break;
 		    		
 		    		case "Doc Viewer":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_mytasks.dcr#taskbuttonsummary";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_mytasks.dcr#taskbuttonsummary";
 		    			break;
 		    			
 		    		case "My Tasks":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_mytasks.dcr#mytaskswindow";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_mytasks.dcr#mytaskswindow";
 		    			break;
 		    		
 		    		case "Reconcile Previous Day":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_reconcile.dcr#1";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_reconcile.dcr#1";
 		    			break;
 		    		
 		    		case "Reconcile Other Activities":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_reconcile.dcr#2";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_reconcile.dcr#2";
 		    			break;
 		    			
 		    		case "Verbal Request":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_verbal_request.dcr";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_verbal_request.dcr";
 		    			break;
 		    			
 		    		case "Search Docs":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_searchdocs.dcr#1";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_searchdocs.dcr#1";
 		    			break;
 		    			
 		    		case "Request History":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_taskhistory.dcr#1";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_taskhistory.dcr#1";
 		    			break;
 		    		
 		    		case "Alternate Role":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_alternate.dcr";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_alternate.dcr";
 		    			break;
 		    			
 		    		case "Admin":
-		    			url = "http://mssbintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_administration.dcr";
+		    			url = "http://objectintranet.msdwis.com/templatedata/category/L3_HTML/data/ServiceCentral/Tools_Resources/bw_administration.dcr";
 		    			break;
 		    			
 		    		default:
-		    			url = "http://mssbintranet.msdwis.com/uiplsds/app-bin/intranetsolution/ServiceCentral/Tools_Resources/BW_consolidated_procedures_jump_page.page";
+		    			url = "http://objectintranet.msdwis.com/uiplsds/app-bin/intranetsolution/ServiceCentral/Tools_Resources/BW_consolidated_procedures_jump_page.page";
 		    	}
 		    	
 		    	window.open(url,"_blank");
 			};
 
-			mssb.getTitleFromRequestType = function(requestType) {
+			object.getTitleFromRequestType = function(requestType) {
 		    	var title = requestType;
 		    	
-		    	if(mssb.globalLookup.preferences.RT) {
+		    	if(object.globalLookup.preferences.RT) {
 			    	dojo.forEach(mssb.globalLookup.preferences.RT,function(item){
 			    		var code;
 			    		try {
@@ -365,7 +365,7 @@
 		    	return title;
     		};
     		
-    		mssb.formatRequestAmount = function(requestAmount) {
+    		object.formatRequestAmount = function(requestAmount) {
     			var formatted = requestAmount;
     			
     			var decIdx =  requestAmount.indexOf('.');
@@ -383,8 +383,8 @@
     			return formatted;
     		};
 
-			mssb.NativeWeb = {};
-			mssb.NativeWeb.getNativeWebURL = function(lookupStr) {
+			object.NativeWeb = {};
+			object.NativeWeb.getNativeWebURL = function(lookupStr) {
 			
 					var env = "unknown";
 					var nativeWebURL;
@@ -421,12 +421,12 @@
 					return nativeWebURL;
 			};
 
-			mssb.NativeWeb.getNativeWebData = function(lookupStr) {
+			object.NativeWeb.getNativeWebData = function(lookupStr) {
 			
 			  var env = "unknown";
 			  var nativeWebData;
 			  if(mssb.globalLookup.environment) {
-			    env = mssb.globalLookup.environment;
+			    env = object.globalLookup.environment;
 			  }
 								
 			  dojo.xhrGet({
@@ -435,7 +435,7 @@
 			    handleAs: "json",
 									
 			    error:function(e) {
-			      mssb.error(new Error("Error determining native system URL location(s)"), "Error determining native system URL location(s)");
+			      object.error(new Error("Error determining native system URL location(s)"), "Error determining native system URL location(s)");
 			    },
 									
 			    load:function(nativeURLs) {
@@ -457,7 +457,7 @@
 			  return nativeWebData;
 			};
 			
-			mssb.launchWindow = function(nativeWebData) {
+			object.launchWindow = function(nativeWebData) {
 			  var nativeWebURL = nativeWebData.url;
 			  var nativeTargetId = nativeWebData.targetId;
 			  var nativeQuery = nativeWebData.query;
@@ -517,8 +517,8 @@
 						document.title = "Branch Workflow - " + mssb.globalLookup.pcgId;
 					}
 				}
-				mssb.taskController = new mssb.TaskDetail.TaskDetailView();
-				mssb.requestTypeData = mssb.getRequestTypes();  
+				object.taskController = new object.TaskDetail.TaskDetailView();
+				object.requestTypeData = object.getRequestTypes();  
 				dojo.connect(window, "error", function(error){
 					console.debug(error);
 					//mssb.error(error);
